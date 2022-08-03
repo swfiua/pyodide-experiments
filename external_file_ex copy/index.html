@@ -1,0 +1,30 @@
+<!doctype html>
+<meta charset="utf-8">
+<html lang="en">
+<html>
+<head>
+    <title>Demo</title>
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.20.0/full/pyodide.js"></script>
+</head>
+<body>
+</body>
+<textarea id="output" style="width: 100%;" rows="6" disabled></textarea>
+<!-- SCRIPT: -->
+    <script type="text/javascript">
+
+const status = document.getElementById("output");
+// ASYNC main function to run code:
+async function main() {
+  output.value = "initializing pyodide..";
+  let pyodide = await loadPyodide();
+
+  output.value = "initializing code..";
+//   get and run custom code 
+  pyodide.runPython(await (await fetch("./scripts/main.py")).text());
+    output.value = "completed..";
+}
+main();
+
+    </script>
+
+<html>
