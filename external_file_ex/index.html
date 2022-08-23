@@ -26,10 +26,15 @@ async function main() {
 //   );
   output.value = "initializing matplotlib..";
 //   load matplotlib
-  await pyodide.loadPackage("matplotlib");
+    //await pyodide.loadPackage("matplotlib");
+    await pyodide.loadPackage(["matplotlib", "astropy", "micropip"]);
+    const micropip = pyodide.pyimport("micropip");
+    await micropip.install('../requests-2021.11.8-py3-none-any.whl')
+    await micropip.install('../blume-0.2.4.4-py3-none-any.whl')
+    await micropip.install('../gotu-0.1.1-py3-none-any.whl')
   output.value = "initializing code..";
 //   get and run custom code 
-  pyodide.runPython(await (await fetch("./scripts/main.py")).text());
+  pyodide.runPythonAsync(await (await fetch("./scripts/main.py")).text());
     output.value = "completed..";
 }
 main();
