@@ -84,8 +84,8 @@
       await pyodide.loadPackage(["matplotlib", "astropy", "micropip"]);
       const micropip = pyodide.pyimport("micropip");
       await micropip.install('../requests-2021.11.8-py3-none-any.whl')
-      await micropip.install('../blume-0.2.4.4-py3-none-any.whl')
       await micropip.install('../gotu-0.1.1-py3-none-any.whl')
+      await micropip.install('../blume-0.2.4.4-py3-none-any.whl')
 
         let namespace = pyodide.globals.get("dict")();
         pyodide.runPython(
@@ -104,6 +104,11 @@
               return to_js([res], depth=1)
             def clear_console():
               pyconsole.buffer = []
+        `, { globals: namespace }
+
+        );
+        pyodide.runPython(
+          `
 
             import matplotlib
             matplotlib.use("module://matplotlib.backends.html5_canvas_backend")
@@ -119,10 +124,9 @@
 
             fm.add(jwst.Jwst())
 
-            magic.spawn(fm.start())
+            task = magic.spawn(fm.start())
             magic.spawn(fm.run())
-        `,
-          { globals: namespace }
+        `,           { globals: namespace }
         );
         let repr_shorten = namespace.get("repr_shorten");
         let banner = namespace.get("BANNER");
